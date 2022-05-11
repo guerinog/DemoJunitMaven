@@ -6,7 +6,7 @@ pipeline {
         stage('Prendo il codice da git'){
             steps{
                 cleanWs()
-				git credentialsId: 'f8db74b3-0315-4066-a99a-8bffccc42b81', url: 'https://github.com/guerinog/test.git'
+				git credentialsId: 'f8db74b3-0315-4066-a99a-8bffccc42b81', url: 'https://github.com/guerinog/DemoJunitMaven.git'
             }
         }
 
