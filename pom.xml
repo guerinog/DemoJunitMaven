@@ -45,13 +45,13 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-      <repository>
-         <id>Core-API-Java-Release</id>
-         <name>Release repository</name>
-         <url>http://localhost:8081/nexus/content/repositories/Core-Api-Release</url>
-      </repository>
-   </distributionManagement>
+<!-- 	<distributionManagement> -->
+<!--       <repository> -->
+<!--          <id>Core-API-Java-Release</id> -->
+<!--          <name>Release repository</name> -->
+<!--          <url>http://localhost:8081/nexus/content/repositories/Core-Api-Release</url> -->
+<!--       </repository> -->
+<!--    </distributionManagement> -->
    
 	<build>
 		<plugins>
@@ -94,15 +94,10 @@
       </profile>
    </profiles>
    
-   <!--  RPOSITORY REMOTI IN AZIENDA -->
-   <repositories>
-      <repository>
-         <id>companyname.lib1</id>
-         <url>http://download.companyname.org/maven2/lib1</url>
-      </repository>
-      <repository>
-         <id>companyname.lib2</id>
-         <url>http://download.companyname.org/maven2/lib2</url>
-      </repository>
-   </repositories>
+  <repositories>
+    <repository>
+      <id>nexus-snapshots</id>
+      <url>http://localhost:8081/repository/GrazianoRepository-SNAP/</url>
+    </repository>
+  </repositories>
 </project>
