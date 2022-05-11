@@ -1,0 +1,35 @@
+pipeline {
+
+    agent any
+    stages {
+
+        stage('Prendo il codice da git'){
+            steps{
+                cleanWs()
+				git credentialsId: 'f8db74b3-0315-4066-a99a-8bffccc42b81', url: 'https://github.com/guerinog/test.git'
+            }
+        }
+
+        stage('Build con Maven'){
+            steps{
+	          	bat "mvn clean install"
+            }
+        }
+
+        stage('Test'){
+            steps{
+	          	bat "mvn test"
+            }
+        }
+
+        stage('Deploy'){
+            steps{
+	    	bat """
+                cd src
+		java Main
+		""".stripIndent().trim()
+            }
+        }
+    }
+
+}
