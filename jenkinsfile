@@ -24,8 +24,7 @@ pipeline {
         stage('Genero i reports'){
        	 	steps{
         		bat "mvn clean verify -DskipITs=true"
-        		junit 'src/reports/*-jupiter.xml'
-        		junit '**/target/surefire-reports/TEST-*.xml'
+        		junit 'target/surefire-reports/TEST-*.xml'
         	}
         }
     }
