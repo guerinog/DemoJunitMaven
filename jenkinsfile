@@ -23,7 +23,7 @@ pipeline {
         //}
         stage('Genero i reports'){
        	 	steps{
-        		bat "mvn clean verify -DskipITs=true"
+        		//bat "mvn clean verify -DskipITs=true"
         		junit 'target/surefire-reports/TEST-*.xml'
         	}
         }
