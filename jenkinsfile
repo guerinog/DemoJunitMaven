@@ -12,7 +12,7 @@ pipeline {
 
         stage('Build con Maven'){
             steps{
-	          	bat "mvn clean install"
+	          	bat "mvn clean install -DskipTests"
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
         //}
         stage('Genero i reports'){
        	 	steps{
-        		//bat "mvn clean verify -DskipITs=true"
+        		bat "mvn clean verify -DskipITs=true"
         		junit 'target/surefire-reports/TEST-*.xml'
         	}
         }
