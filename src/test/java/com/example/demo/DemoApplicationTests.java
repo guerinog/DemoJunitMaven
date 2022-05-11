@@ -49,4 +49,22 @@ class DemoApplicationTests {
 		assertEquals(2,s,"sottrazione non corretta");
 		logger.debug("Fine testSottrazione");
 	}
+	
+	@Test
+	public void testSomma1() {
+		logger.debug("Inizio testSomma1");
+		int a=5, b=3;
+		int s = somma(a, b);
+		assertEquals(2,s,"somma non corretta");
+		logger.debug("Fine testSomma1");
+	}
+	
+	@Test
+	public void testSottrazione1() {
+		logger.debug("Inizio testSottrazione1");
+		int a=5, b=3;
+		int s = sottrazione(a, b);
+		assertEquals(3,s,"sottrazione non corretta");
+		logger.debug("Fine testSottrazione1");
+	}
 }
