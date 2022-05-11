@@ -64,7 +64,7 @@ class DemoApplicationTests {
 		logger.debug("Inizio testSottrazione1");
 		int a=5, b=3;
 		int s = sottrazione(a, b);
-		assertEquals(8,s,"sottrazione non corretta");
+		assertEquals(2,s,"sottrazione non corretta");
 		logger.debug("Fine testSottrazione1");
 	}
 }
