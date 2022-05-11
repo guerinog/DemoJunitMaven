@@ -21,14 +21,9 @@ pipeline {
 	          	bat "mvn test"
             }
         }
-
-        stage('Deploy'){
-            steps{
-	    	bat """
-                cd src
-		java Main
-		""".stripIndent().trim()
-            }
+        stage('Genero i reports'){
+        	bat "mvn clean verify -DskipITs=true"
+        	bat junit '**/target/surefire-reports/TEST-*.xml'archive 'target/*.jar'
         }
     }
 
