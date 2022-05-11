@@ -16,15 +16,16 @@ pipeline {
             }
         }
 
-        stage('Test'){
-            steps{
-	          	bat "mvn test"
-            }
-        }
+        //stage('Test'){
+         //   steps{
+	     //     	bat "mvn test"
+         //   }
+        //}
         stage('Genero i reports'){
        	 	steps{
         		bat "mvn clean verify -DskipITs=true"
-        		junit '**/target/surefire-reports/TEST-*.xml'archive 'target/*.jar'
+        		junit 'src/reports/*-jupiter.xml'
+        		junit '**/target/surefire-reports/TEST-*.xml'
         	}
         }
     }
