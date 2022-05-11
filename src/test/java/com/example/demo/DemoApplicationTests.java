@@ -44,18 +44,18 @@ class DemoApplicationTests {
 	@Test
 	public void testSottrazione() {
 		logger.debug("Inizio testSottrazione");
-		int a=5, b=3;
+		int a=3, b=3;
 		int s = sottrazione(a, b);
-		assertEquals(2,s,"sottrazione non corretta");
+		assertEquals(0,s,"sottrazione non corretta");
 		logger.debug("Fine testSottrazione");
 	}
 	
 	@Test
 	public void testSomma1() {
 		logger.debug("Inizio testSomma1");
-		int a=5, b=3;
+		int a=3, b=3;
 		int s = somma(a, b);
-		assertEquals(2,s,"somma non corretta");
+		assertEquals(6,s,"somma non corretta");
 		logger.debug("Fine testSomma1");
 	}
 	
@@ -64,7 +64,7 @@ class DemoApplicationTests {
 		logger.debug("Inizio testSottrazione1");
 		int a=5, b=3;
 		int s = sottrazione(a, b);
-		assertEquals(3,s,"sottrazione non corretta");
+		assertEquals(8,s,"sottrazione non corretta");
 		logger.debug("Fine testSottrazione1");
 	}
 }

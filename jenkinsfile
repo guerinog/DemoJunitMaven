@@ -1,10 +1,15 @@
 pipeline {
-
+	environment {
+	    registry = 'guerinog/jenkinsdemo'
+	    registryCredential = 'dockerhubguerinog'
+	    dockerImage = ''
+	}
     agent any
     stages {
 
-        stage('Prendo il codice da git'){
+        stage('Clonazione da Git'){
             steps{
+            	echo "Clonazione Git"
                 cleanWs()
 				git credentialsId: 'f8db74b3-0315-4066-a99a-8bffccc42b81', url: 'https://github.com/guerinog/DemoJunitMaven.git'
             }
@@ -15,18 +20,50 @@ pipeline {
 	          	bat "mvn clean install -DskipTests"
             }
         }
-
-        //stage('Test'){
-         //   steps{
-	     //     	bat "mvn test"
-         //   }
-        //}
-        stage('Genero i reports'){
+        
+        stage('Eseguo i Test e Genero i reports'){
        	 	steps{
-        		//bat "mvn clean verify -DskipITs=true"
+        		bat "mvn clean verify -DskipITs=true"
         		junit 'target/surefire-reports/TEST-*.xml'
         	}
         }
+        stage('Costruisco immagine') {
+      		steps{
+		        script {
+		            echo "Costruisco immagine :$BUILD_NUMBER"
+		            dockerImage = docker.build registry + ":$BUILD_NUMBER"
+		        }
+      		}
+    	} 
+    	stage('Deploy Image su DockerHub') {
+	    	steps{
+		        script {
+		            echo "Deploy Image su DockerHub" 
+		            docker.withRegistry( '', registryCredential ) {
+		            dockerImage.push()
+		         }
+		       }
+			}
+		}
+		stage('Cancella l immagine creata') {
+		      steps{
+		         echo "Cancella l immagine creata $registry:$BUILD_NUMBER"
+		         bat "docker rmi $registry:$BUILD_NUMBER"
+		      }
+		}
+		stage('Creo il Container') {
+		    steps {
+		        echo "Creo il Container test"
+		        bat "docker rm -f test || true"
+		        bat "docker run --name test -p 3000:8080 -d $registry:$BUILD_NUMBER"
+		    }
+		}
+		stage('Cancella Immagini non utilizzate') {
+		    steps {
+		        echo "Cancella Immagini non utilizzate"
+		    	bat "docker image prune -a -f"
+		    }
+		}
     }
 
 }
