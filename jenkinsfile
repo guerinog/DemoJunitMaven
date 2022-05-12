@@ -56,15 +56,18 @@ pipeline {
 		       }
 			}
 		}
+		/*
 		stage('Cancella l immagine creata') {
 		      steps{
 		         echo "Cancella l immagine creata $registry:$BUILD_NUMBER sulla macchina"
 		         bat "docker rmi $registry:$BUILD_NUMBER"
 		      }
 		}
+		*/
 		stage('Creo il Container') {
 		    steps {
 		        echo "Creo il Container test sulla macchina"
+			echo "se c'è un container di nome test lo elimino"
 		        bat "docker rm -f test || true"
 			echo "Espongo la porta di spring boot 8787 sulla porta localhost 8123"
 		        bat "docker run --name test -p 8123:8787 -d $registry:$BUILD_NUMBER"
