@@ -1,12 +1,12 @@
 pipeline {
 	environment {
-	    registry = 'guerinog/jenkinsdemo'
+	    registry = 'guerinog/demojunitmaven'
 	    registryCredential = 'dockerhubguerinog'
 	    dockerImage = ''
 	}
     agent any
     stages {
-
+	// ### INIZIO CLONAZIONE DA GIT ###
         stage('Clonazione da Git'){
             steps{
             	echo "Clonazione Git"
@@ -14,7 +14,9 @@ pipeline {
 				git credentialsId: 'f8db74b3-0315-4066-a99a-8bffccc42b81', url: 'https://github.com/guerinog/DemoJunitMaven.git'
             }
         }
-
+	// ### FINE CLONAZIONE DA GIT ###
+	
+	// ### INIZIO MAVEN ###
         stage('Build con Maven'){
             steps{
 	          	bat "mvn clean install -DskipTests"
@@ -27,6 +29,15 @@ pipeline {
         		junit 'target/surefire-reports/TEST-*.xml'
         	}
         }
+	// ### FINE MAVEN ###
+	// ### INIZIO DOCKER ###
+	/* stage('Costruisco immagine') {
+		steps {
+			sh 'docker login -u ${DOCKER_REGISTRY_CREDENTIALS_USR} -p ${DOCKER_REGISTRY_CREDENTIALS_PSW} registry.gitlab.com'
+			sh 'docker build -t ${IMAGE}:${BRANCH_NAME} .'
+			sh 'docker push ${IMAGE}:${BRANCH_NAME}'
+		}
+	} */
         stage('Costruisco immagine') {
       		steps{
 		        script {
@@ -47,15 +58,16 @@ pipeline {
 		}
 		stage('Cancella l immagine creata') {
 		      steps{
-		         echo "Cancella l immagine creata $registry:$BUILD_NUMBER"
+		         echo "Cancella l immagine creata $registry:$BUILD_NUMBER sulla macchina"
 		         bat "docker rmi $registry:$BUILD_NUMBER"
 		      }
 		}
 		stage('Creo il Container') {
 		    steps {
-		        echo "Creo il Container test"
+		        echo "Creo il Container test sulla macchina"
 		        bat "docker rm -f test || true"
-		        bat "docker run --name test -p 3000:8080 -d $registry:$BUILD_NUMBER"
+			echo "Espongo la porta di spring boot 8787 sulla porta localhost 8123"
+		        bat "docker run --name test -p 8123:8787 -d $registry:$BUILD_NUMBER"
 		    }
 		}
 		stage('Cancella Immagini non utilizzate') {
@@ -64,6 +76,15 @@ pipeline {
 		    	bat "docker image prune -a -f"
 		    }
 		}
+	// ### FINE DOCKER ###
     }
-
+	
+  post {
+    success {
+      mail to: "pascale.graziano@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
+    }
+    failure {
+      mail to: "pascale.graziano@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
+    }
+  }
 }
