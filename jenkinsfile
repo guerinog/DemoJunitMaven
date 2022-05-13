@@ -70,7 +70,7 @@ pipeline {
 			echo "se c'è un container di nome test lo elimino"
 		        bat "docker rm -f test || true"
 			echo "Espongo la porta di spring boot 8787 sulla porta localhost 8123"
-		        bat "docker run --name test -p 8123:8787 -d $registry:$BUILD_NUMBER"
+		        bat "docker run --name test -p 8787:8787 -d $registry:$BUILD_NUMBER"
 		    }
 		}
 		stage('Cancella Immagini non utilizzate') {
