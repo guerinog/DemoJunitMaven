@@ -84,7 +84,9 @@ pipeline {
 	// ### INIZIO JMETER ###
 	 stage('Eseguo i Test JMETER'){
        	 	steps{
-        		bat "cd C:\apache-jmeter-5.4.3\apache-jmeter-5.4.3\bin"
+        		bat "cd C:/apache-jmeter-5.4.3/apache-jmeter-5.4.3/bin"
+			def workspace = pwd()
+    			echo "workspace = ${workspace}"
         		bat "jmeter -j jmeter.save.saveservice.output_format=xml -n -t demoJmeter.jmx -l reportJenkins.jtl"
 			step([$class: 'ArtifactArchiver', artifacts: '**/*.jtl'])
         	}
