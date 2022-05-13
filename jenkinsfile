@@ -86,6 +86,7 @@ pipeline {
        	 	steps{
         		bat "C:/apache-jmeter-5.4.3/apache-jmeter-5.4.3/bin/jmeter -j jmeter.save.saveservice.output_format=xml -n -t demoJmeter.jmx -l reportJenkins.jtl"
 			step([$class: 'ArtifactArchiver', artifacts: '**/*.jtl'])
+			step([$class: 'ArtifactArchiver', artifacts: 'Test.html', fingerprint: true])
         	}
         }
 	// ### FINE JMETER ###
